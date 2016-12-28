@@ -2,7 +2,7 @@
   "name": "uniflow-polymer-a",
   "version": "0.5.0",
   "authors": [
-    "Andrei Militeev <militeev@example.com>"
+    "Andrei Militeev <militeev@gmail.com>"
   ],
   "description": "A straightforward way to architect Polymer application using unidirectional data flow.",
   "keywords": [
