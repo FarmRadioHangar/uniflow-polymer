@@ -1,0 +1,88 @@
+<!doctype html>
+<!--
+@license
+Copyright (c) 2015 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>paper-toolbar basic tests</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+  <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
+  <script src="../../web-component-tester/browser.js"></script>
+
+  <link rel="import" href="../../uniflow-polymer/action-emitter.html">
+
+</head>
+<body>
+
+  <dom-module id="action-emitter-test">
+    <script>
+      Polymer({
+        is: 'action-emitter-test',
+        behaviors: [
+          UniFlow.ActionEmitter,
+        ],
+      });
+    </script>
+  </dom-module>
+
+  <test-fixture id="basic">
+    <template>
+      <action-emitter-test></action-emitter-test>
+    </template>
+  </test-fixture>
+
+  <script>
+    'use strict';
+
+    suite('UniFlow.ActionEmitter', () => {
+
+      let actionEmitter;
+
+      setup(() => {
+        actionEmitter = fixture('basic');
+      });
+
+      test('is ok', () => {
+        expect(actionEmitter).to.be.ok;
+      });
+
+      test('fires a dispatch-action event on action emit', () => {
+        sinon.spy(actionEmitter, 'fire');
+        let action = 'detail';
+        actionEmitter.emitAction(action);
+        expect(actionEmitter.fire).to.be.calledWith('dispatch-action', action);
+      });
+
+      test('prepends statePath to detail.path', () => {
+        sinon.spy(actionEmitter, 'fire');
+        let action = {path: 'my.path'};
+        actionEmitter.statePath = 'state';
+        actionEmitter.emitAction(action);
+        expect(actionEmitter.fire).to.be.calledWith('dispatch-action', {
+          path: 'state.my.path'
+        });
+      });
+
+      test('does not change detail.path if it starts with "state."', () => {
+        sinon.spy(actionEmitter, 'fire');
+        let action = {path: 'state.my.path'};
+        actionEmitter.statePath = 'some.state.path';
+        actionEmitter.emitAction(action);
+        expect(actionEmitter.fire).to.be.calledWith('dispatch-action', {
+          path: 'state.my.path'
+        });
+      });
+
+    });
+  </script>
+
+</body>
+</html>

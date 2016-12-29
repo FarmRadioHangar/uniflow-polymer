@@ -1,0 +1,96 @@
+<!doctype html>
+<!--
+@license
+Copyright (c) 2015 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>paper-toolbar basic tests</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+  <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
+  <script src="../../web-component-tester/browser.js"></script>
+
+  <link rel="import" href="../../uniflow-polymer/action-dispatcher.html">
+
+</head>
+<body>
+
+  <dom-module id="action-dispatcher-test">
+    <script>
+      Polymer({
+        is: 'action-dispatcher-test',
+        behaviors: [
+          UniFlow.ActionDispatcher,
+        ],
+      });
+    </script>
+  </dom-module>
+
+  <test-fixture id="basic">
+    <template>
+      <action-dispatcher-test></action-dispatcher-test>
+    </template>
+  </test-fixture>
+
+  <script>
+    'use strict';
+
+    suite('UniFlow.ActionDispatcher', () => {
+
+      let actionDispatcher;
+
+      setup(() => {
+        actionDispatcher = fixture('basic');
+      });
+
+      test('is ok', () => {
+        expect(actionDispatcher).to.be.ok;
+      });
+
+      test('dispatchAction calls method with name that matches action ' +
+          'type', () => {
+        actionDispatcher.MY_ACTION = sinon.spy();
+        const detail = {type: 'MY_ACTION', foo: 'bar'};
+        actionDispatcher.dispatchAction(detail);
+        expect(actionDispatcher.MY_ACTION).to.be.calledWith(detail);
+      });
+
+      test('dispatchAction returns false when action processor method' +
+        ' returns false', () => {
+        actionDispatcher.MY_ACTION = () => false;
+        const detail = {type: 'MY_ACTION'};
+        expect(actionDispatcher.dispatchAction(detail)).to.be.false;
+      });
+
+      // test('prepends statePath to detail.path', () => {
+      //   sinon.spy(actionDispatcher, 'fire');
+      //   let action = {path: 'my.path'};
+      //   actionDispatcher.statePath = 'state';
+      //   actionDispatcher.emitAction(action);
+      //   expect(actionDispatcher.fire).to.be.calledWith('dispatch-action', {
+      //     path: 'state.my.path'
+      //   });
+      // });
+
+      // test('does not change detail.path if it starts with "state."', () => {
+      //   sinon.spy(actionDispatcher, 'fire');
+      //   let action = {path: 'state.my.path'};
+      //   actionDispatcher.statePath = 'some.state.path';
+      //   actionDispatcher.emitAction(action);
+      //   expect(actionDispatcher.fire).to.be.calledWith('dispatch-action', {
+      //     path: 'state.my.path'
+      //   });
+      // });
+
+    });
+  </script>
+
+</body>
+</html>
