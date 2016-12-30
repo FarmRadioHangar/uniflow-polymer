@@ -28,7 +28,21 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         is: 'action-dispatcher-test',
         behaviors: [
           UniFlow.ActionDispatcher,
-        ],
+        ]
+      });
+    </script>
+  </dom-module>
+
+  <dom-module id="nested-action-dispatcher-test">
+    <template>
+      <action-dispatcher-test id="inner"></action-dispatcher-test>
+    </template>
+    <script>
+      Polymer({
+        is: 'nested-action-dispatcher-test',
+        behaviors: [
+          UniFlow.ActionDispatcher,
+        ]
       });
     </script>
   </dom-module>
@@ -36,6 +50,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   <test-fixture id="basic">
     <template>
       <action-dispatcher-test></action-dispatcher-test>
+    </template>
+  </test-fixture>
+
+  <test-fixture id="nested">
+    <template>
+      <nested-action-dispatcher-test></nested-action-dispatcher-test>
     </template>
   </test-fixture>
 
@@ -69,25 +89,15 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         expect(actionDispatcher.dispatchAction(detail)).to.be.false;
       });
 
-      // test('prepends statePath to detail.path', () => {
-      //   sinon.spy(actionDispatcher, 'fire');
-      //   let action = {path: 'my.path'};
-      //   actionDispatcher.statePath = 'state';
-      //   actionDispatcher.emitAction(action);
-      //   expect(actionDispatcher.fire).to.be.calledWith('dispatch-action', {
-      //     path: 'state.my.path'
-      //   });
-      // });
-
-      // test('does not change detail.path if it starts with "state."', () => {
-      //   sinon.spy(actionDispatcher, 'fire');
-      //   let action = {path: 'state.my.path'};
-      //   actionDispatcher.statePath = 'some.state.path';
-      //   actionDispatcher.emitAction(action);
-      //   expect(actionDispatcher.fire).to.be.calledWith('dispatch-action', {
-      //     path: 'state.my.path'
-      //   });
-      // });
+      test('nested action dispatcher\'s method is invoked', () => {
+        actionDispatcher = fixture('nested');
+        expect(actionDispatcher).to.be.ok;
+        expect(actionDispatcher.$.inner).to.be.ok;
+        actionDispatcher.$.inner.MY_ACTION = sinon.spy();
+        const detail = {type: 'MY_ACTION', foo: 'bar'};
+        actionDispatcher.dispatchAction(detail);
+        expect(actionDispatcher.$.inner.MY_ACTION).to.be.calledWith(detail);
+      });
 
     });
   </script>
