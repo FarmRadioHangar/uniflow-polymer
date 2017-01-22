@@ -268,7 +268,11 @@ limitations under the License.
         });
         this.initValidationStatus_();
       } else {
-        this.set('status.isModified', true);
+        if (this.get('model')) {
+          this.set('status.isModified', true);
+        } else {
+          this.set('status', {});
+        }
       }
     }
 
