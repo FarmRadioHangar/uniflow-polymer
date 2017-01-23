@@ -13,6 +13,11 @@
     <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
     <title>{{ page.title }}</title>
+    <script>
+      function resizeIframe(obj) {
+        obj.style.height = obj.contentWindow.document.body.scrollHeight + 'px';
+      }
+    </script>
   </head>
 
   <body>
@@ -27,7 +32,7 @@
     <div id="content-wrapper">
       <div class="inner clearfix">
         <section id="main-content">
-          <iframe src="https://www.google.com"></iframe>
+          <iframe src="https://amiliteev.github.io/uniflow-polymer/components/uniflow-polymer/#UniFlow.StateAware" frameborder="0" scrolling="no" onload="resizeIframe(this)"></iframe>
         </section>
 
         <aside id="sidebar">
