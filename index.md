@@ -24,9 +24,9 @@ Polymer Flow is implemented as a set of behaviors that developers assign to thei
 
 [Action Emitter](components/uniflow-polymer/#UniFlow.ActionEmitter)
 
-[Action Dispatcher](components/uniflow-polymer/#UniFlow.ActionDispatcher)
+[State Mutator](components/uniflow-polymer/#UniFlow.StateMutator)
 
-[State-Aware](components/uniflow-polymer/#UniFlow.StateAware)
+[Action Dispatcher](components/uniflow-polymer/#UniFlow.ActionDispatcher)
 
 [Model View](components/uniflow-polymer/#UniFlow.ModelView)
 
